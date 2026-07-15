@@ -168,7 +168,7 @@
   .line.right{background:var(--correct-bg);color:var(--correct);}
   .expl{margin-top:10px;font-size:14px;color:var(--muted);line-height:1.5;}
   .result-actions{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap;}
-  .hidden{display:none;}
+  .hidden{display:none !important;}
   @media (prefers-reduced-motion: reduce){
     *{transition:none !important;}
   }
@@ -176,67 +176,347 @@
     .start-card{padding:32px 22px;}
     .q-card{padding:24px 18px;}
   }
+
+  /* Neo-brutalist Responsive Layout Wrapper */
+  .wrap-container {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+  .main-content {
+    flex: 1;
+    max-width: 760px;
+    width: 100%;
+  }
+  .sidebar-calc {
+    width: 320px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 32px;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .sidebar-calc.hidden {
+    display: none !important;
+  }
+
+  /* Neo-brutalist Calculator styles */
+  .calc-card {
+    background: #fff;
+    border: 2px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .calc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 8px;
+  }
+  .calc-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.1em;
+  }
+  .calc-close-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .calc-display {
+    background: #fff;
+    border: 2px solid var(--ink);
+    padding: 12px;
+    text-align: right;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    word-break: break-all;
+  }
+  .calc-formula {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    min-height: 18px;
+  }
+  .calc-input {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 4px;
+  }
+  .calc-keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .btn-calc {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    border: 2px solid var(--ink);
+    background: #fff;
+    color: var(--ink);
+    height: 46px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.05s ease, box-shadow 0.05s ease;
+  }
+  .btn-calc:hover {
+    background: var(--paper);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .btn-calc:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0 var(--ink);
+  }
+  .btn-calc.operator {
+    background: var(--grid);
+  }
+  .btn-calc.operator:hover {
+    background: #d0d7e2;
+  }
+  .btn-calc.equals {
+    background: var(--accent);
+    grid-column: span 2;
+  }
+  .btn-calc.equals:hover {
+    background: var(--accent-dark);
+  }
+  
+  /* History Panel */
+  .calc-history {
+    border-top: 2px solid var(--ink);
+    padding-top: 12px;
+    max-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .history-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .history-list {
+    overflow-y: auto;
+    max-height: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    text-align: left;
+  }
+  .history-item {
+    padding: 4px 6px;
+    border: 1px solid var(--grid);
+    background: #fdfdfd;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+  }
+  .history-item:hover {
+    background: var(--paper);
+    border-color: var(--ink);
+  }
+  .history-empty {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+    padding: 8px 0;
+  }
+  
+  /* Floating toggle button for mobile */
+  .calc-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1001;
+    display: none;
+    border-radius: 50% !important;
+    width: 56px;
+    height: 56px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+    font-size: 24px;
+    box-shadow: 4px 4px 0 var(--ink) !important;
+  }
+  .calc-toggle-btn.hidden {
+    display: none !important;
+  }
+
+  @media (max-width: 1100px) {
+    .wrap-container {
+      flex-direction: column;
+      gap: 20px;
+      padding-bottom: 100px;
+    }
+    .main-content {
+      max-width: 100%;
+    }
+    .sidebar-calc {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      top: auto;
+      z-index: 1000;
+      box-shadow: 8px 8px 0 var(--ink);
+      transform: translateY(150%) scale(0.9);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+      width: calc(100% - 40px);
+      max-width: 320px;
+    }
+    .sidebar-calc.active {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: all;
+    }
+    .calc-close-btn {
+      display: block;
+    }
+    .calc-toggle-btn {
+      display: flex !important;
+    }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-
-  <!-- START -->
-  <section id="startScreen">
-    <div class="start-card">
-      <div class="eyebrow">Latihan · Single &amp; Multiple Choice</div>
-      <h1>Math English <mark>Logic Test</mark></h1>
-      <p style="margin-top:16px;color:var(--muted);line-height:1.6;">
-        25 soal aritmetika, persentase, rasio, dan pola logika dalam bahasa Inggris.
-        Jawab semua soal, lalu lihat skor dan pembahasannya.
-      </p>
-      <div class="start-meta">
-        <div><span class="mono">25</span><small>Soal</small></div>
-        <div><span class="mono">60:00</span><small>Waktu</small></div>
-        <div><span class="mono">A–D</span><small>Pilihan</small></div>
+<div class="wrap-container">
+  <main class="main-content">
+    <!-- START -->
+    <section id="startScreen">
+      <div class="start-card">
+        <div class="eyebrow">Latihan · Single &amp; Multiple Choice</div>
+        <h1>Math English <mark>Logic Test</mark></h1>
+        <p style="margin-top:16px;color:var(--muted);line-height:1.6;">
+          25 soal aritmetika, persentase, rasio, dan pola logika dalam bahasa Inggris.
+          Jawab semua soal, lalu lihat skor dan pembahasannya.
+        </p>
+        <div class="start-meta">
+          <div><span class="mono">25</span><small>Soal</small></div>
+          <div><span class="mono">60:00</span><small>Waktu</small></div>
+          <div><span class="mono">A–D</span><small>Pilihan</small></div>
+        </div>
+        <button class="btn" id="startBtn">Mulai tes</button>
       </div>
-      <button class="btn" id="startBtn">Mulai tes</button>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quizScreen" class="hidden">
+      <header class="quiz-head">
+        <div class="eyebrow" style="margin:0;">Math English Logic Test</div>
+        <div class="timer" id="timer">60:00</div>
+      </header>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+      <div class="q-card">
+        <div class="q-num" id="qNum">Soal 1 / 25</div>
+        <div class="q-text" id="qText"></div>
+        <div class="options" id="options"></div>
+      </div>
+
+      <div class="quiz-nav">
+        <button class="btn ghost" id="prevBtn">← Sebelumnya</button>
+        <button class="btn ghost" id="nextBtn">Berikutnya →</button>
+        <button class="btn" id="submitBtn">Selesai &amp; nilai</button>
+      </div>
+
+      <div class="dots" id="dots"></div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="resultScreen" class="hidden">
+      <div class="score-band">
+        <div class="eyebrow" style="color:#8f9ac2;">Hasil tes</div>
+        <div class="big"><em id="scoreNum">0</em>/25</div>
+        <div class="score-sub" id="scoreSub"></div>
+      </div>
+      <div class="result-actions">
+        <button class="btn" id="retryBtn">Ulangi tes</button>
+        <button class="btn ghost" id="reviewToggle">Lihat pembahasan</button>
+      </div>
+      <div class="review hidden" id="review"></div>
+    </section>
+  </main>
+
+  <!-- CALCULATOR WIDGET -->
+  <aside id="calculatorWidget" class="sidebar-calc hidden">
+    <div class="calc-card">
+      <div class="calc-header">
+        <span class="calc-title">🧮 KALKULATOR BANTU</span>
+        <button class="calc-close-btn" id="calcCloseBtn" aria-label="Tutup Kalkulator">&times;</button>
+      </div>
+      <div class="calc-display">
+        <div class="calc-formula" id="calcFormula"></div>
+        <div class="calc-input" id="calcInput">0</div>
+      </div>
+      <div class="calc-keypad">
+        <button class="calc-key btn-calc" data-val="C">C</button>
+        <button class="calc-key btn-calc" data-val="back">⌫</button>
+        <button class="calc-key btn-calc" data-val="%">%</button>
+        <button class="calc-key btn-calc operator" data-val="/">÷</button>
+        
+        <button class="calc-key btn-calc" data-val="7">7</button>
+        <button class="calc-key btn-calc" data-val="8">8</button>
+        <button class="calc-key btn-calc" data-val="9">9</button>
+        <button class="calc-key btn-calc operator" data-val="*">×</button>
+        
+        <button class="calc-key btn-calc" data-val="4">4</button>
+        <button class="calc-key btn-calc" data-val="5">5</button>
+        <button class="calc-key btn-calc" data-val="6">6</button>
+        <button class="calc-key btn-calc operator" data-val="-">−</button>
+        
+        <button class="calc-key btn-calc" data-val="1">1</button>
+        <button class="calc-key btn-calc" data-val="2">2</button>
+        <button class="calc-key btn-calc" data-val="3">3</button>
+        <button class="calc-key btn-calc operator" data-val="+">+</button>
+        
+        <button class="calc-key btn-calc" data-val="0">0</button>
+        <button class="calc-key btn-calc" data-val=".">.</button>
+        <button class="calc-key btn-calc double equals" data-val="=">=</button>
+      </div>
+      <div class="calc-history">
+        <div class="history-title">Riwayat Perhitungan</div>
+        <div class="history-list" id="calcHistoryList">
+          <div class="history-empty">Belum ada riwayat</div>
+        </div>
+      </div>
     </div>
-  </section>
-
-  <!-- QUIZ -->
-  <section id="quizScreen" class="hidden">
-    <header class="quiz-head">
-      <div class="eyebrow" style="margin:0;">Math English Logic Test</div>
-      <div class="timer" id="timer">60:00</div>
-    </header>
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-
-    <div class="q-card">
-      <div class="q-num" id="qNum">Soal 1 / 25</div>
-      <div class="q-text" id="qText"></div>
-      <div class="options" id="options"></div>
-    </div>
-
-    <div class="quiz-nav">
-      <button class="btn ghost" id="prevBtn">← Sebelumnya</button>
-      <button class="btn ghost" id="nextBtn">Berikutnya →</button>
-      <button class="btn" id="submitBtn">Selesai &amp; nilai</button>
-    </div>
-
-    <div class="dots" id="dots"></div>
-  </section>
-
-  <!-- RESULT -->
-  <section id="resultScreen" class="hidden">
-    <div class="score-band">
-      <div class="eyebrow" style="color:#8f9ac2;">Hasil tes</div>
-      <div class="big"><em id="scoreNum">0</em>/25</div>
-      <div class="score-sub" id="scoreSub"></div>
-    </div>
-    <div class="result-actions">
-      <button class="btn" id="retryBtn">Ulangi tes</button>
-      <button class="btn ghost" id="reviewToggle">Lihat pembahasan</button>
-    </div>
-    <div class="review hidden" id="review"></div>
-  </section>
-
+  </aside>
 </div>
+
+<!-- FLOATING TOGGLE BUTTON FOR MOBILE -->
+<button id="calcToggleBtn" class="btn calc-toggle-btn hidden" aria-label="Buka Kalkulator">
+  🧮
+</button>
 
 <script>
 const QUESTIONS = [
@@ -349,6 +629,8 @@ function startQuiz(){
   startScreen.classList.add("hidden");
   resultScreen.classList.add("hidden");
   quizScreen.classList.remove("hidden");
+  $("calculatorWidget").classList.remove("hidden");
+  $("calcToggleBtn").classList.remove("hidden");
   buildDots();
   render();
   clearInterval(timerId);
@@ -464,6 +746,162 @@ function finish(){
     rev.appendChild(card);
   });
 
+  window.scrollTo({top: 0});
+}
+
+// ---------- Calculator Widget Logic ----------
+let calcExpression = "";
+let calcHistory = [];
+
+function handleCalcInput(val) {
+  const formulaEl = $("calcFormula");
+  const inputEl = $("calcInput");
+  
+  if (val === "C") {
+    calcExpression = "";
+    inputEl.textContent = "0";
+    formulaEl.textContent = "";
+  } else if (val === "back") {
+    if (calcExpression.length > 0) {
+      calcExpression = calcExpression.trim();
+      // Remove trailing space if it ends with space (operators)
+      if (calcExpression.endsWith(" ")) {
+        calcExpression = calcExpression.slice(0, -3);
+      } else {
+        calcExpression = calcExpression.slice(0, -1);
+      }
+      formulaEl.textContent = calcExpression;
+      if (calcExpression === "") {
+        inputEl.textContent = "0";
+      } else {
+        // Show live preview if ending with number
+        try {
+          const evalExpr = calcExpression.replace(/×/g, "*").replace(/÷/g, "/");
+          if (/[0-9]$/.test(evalExpr.trim())) {
+            const preview = safeEval(evalExpr);
+            if (preview !== "Error" && !isNaN(preview)) {
+              inputEl.textContent = preview;
+            }
+          }
+        } catch (e) {}
+      }
+    }
+  } else if (val === "=") {
+    if (calcExpression === "") return;
+    const evalExpr = calcExpression.replace(/×/g, "*").replace(/÷/g, "/");
+    const result = safeEval(evalExpr);
+    
+    if (result !== "Error" && result !== undefined) {
+      // Add to history
+      calcHistory.unshift({ expr: calcExpression, res: result });
+      if (calcHistory.length > 10) calcHistory.pop();
+      renderCalcHistory();
+      
+      inputEl.textContent = result;
+      formulaEl.textContent = calcExpression + " =";
+      calcExpression = String(result); // Allow chaining operations
+    } else {
+      inputEl.textContent = "Error";
+    }
+  } else {
+    // Prevent starting with operators except minus
+    if (calcExpression === "" && ["+", "*", "/", "%"].includes(val)) return;
+    
+    let displayVal = val;
+    if (val === "*") displayVal = " × ";
+    else if (val === "/") displayVal = " ÷ ";
+    else if (val === "+") displayVal = " + ";
+    else if (val === "-") displayVal = " - ";
+    
+    calcExpression += displayVal;
+    formulaEl.textContent = calcExpression;
+    
+    // Live evaluation on typing
+    try {
+      const evalExpr = calcExpression.replace(/×/g, "*").replace(/÷/g, "/");
+      if (/[0-9]$/.test(evalExpr.trim())) {
+        const preview = safeEval(evalExpr);
+        if (preview !== "Error" && !isNaN(preview)) {
+          inputEl.textContent = preview;
+        }
+      }
+    } catch (e) {}
+  }
+}
+
+function safeEval(str) {
+  // Allow only numbers, operators, dots, and parentheses
+  const clean = str.replace(/[^0-9+\-*/%.()]/g, '');
+  try {
+    const res = Function(`"use strict"; return (${clean})`)();
+    if (res === Infinity || res === -Infinity) return "Error";
+    if (typeof res === "number" && !Number.isInteger(res)) {
+      return Math.round(res * 1000000) / 1000000; // Limit to 6 decimals
+    }
+    return res;
+  } catch (e) {
+    return "Error";
+  }
+}
+
+function renderCalcHistory() {
+  const listEl = $("calcHistoryList");
+  if (calcHistory.length === 0) {
+    listEl.innerHTML = '<div class="history-empty">Belum ada riwayat</div>';
+    return;
+  }
+  listEl.innerHTML = "";
+  calcHistory.forEach((item) => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+    div.innerHTML = `<span>${item.expr}</span><strong>${item.res}</strong>`;
+    div.addEventListener("click", () => {
+      calcExpression = String(item.res);
+      $("calcFormula").textContent = calcExpression;
+      $("calcInput").textContent = String(item.res);
+    });
+    listEl.appendChild(div);
+  });
+}
+
+// Toggle logic for mobile
+$("calcToggleBtn").addEventListener("click", () => {
+  const widget = $("calculatorWidget");
+  const active = widget.classList.toggle("active");
+  $("calcToggleBtn").textContent = active ? "❌" : "🧮";
+});
+
+$("calcCloseBtn").addEventListener("click", () => {
+  $("calculatorWidget").classList.remove("active");
+  $("calcToggleBtn").textContent = "🧮";
+});
+
+// Setup click handlers for all calc keys
+document.querySelectorAll(".btn-calc").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const val = btn.getAttribute("data-val");
+    handleCalcInput(val);
+  });
+});
+
+// Keyboard support
+document.addEventListener("keydown", (e) => {
+  if ($("calculatorWidget").classList.contains("hidden")) return;
+  
+  const key = e.key;
+  if (/[0-9.]/.test(key)) {
+    handleCalcInput(key);
+  } else if (["+", "-", "*", "/", "%"].includes(key)) {
+    handleCalcInput(key);
+  } else if (key === "Enter" || key === "=") {
+    e.preventDefault();
+    handleCalcInput("=");
+  } else if (key === "Backspace") {
+    handleCalcInput("back");
+  } else if (key === "Escape" || key === "c" || key === "C") {
+    handleCalcInput("C");
+  }
+});
   window.scrollTo({top: 0});
 }
 </script>
