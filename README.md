@@ -14,7 +14,7 @@ Sebuah aplikasi web interaktif sederhana dan responsif untuk latihan soal matema
 ## Demo / Live Web
 
 Aplikasi ini dapat diakses secara langsung melalui GitHub Pages:
-👉 **[Math English Logic Test Live Demo](https://emzyjeppp.github.io/math-english-logic-test/)**
+👉 **[Math English Logic Test Live Demo](https://jeppp.is-a.dev/math-english-logic-test/)**
 
 ## Cara Penggunaan Secara Lokal
 
