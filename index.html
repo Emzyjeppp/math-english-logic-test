@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math English Logic Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12224a;
+    --paper:#fbfaf4;
+    --grid:#dfe6f0;
+    --accent:#ffd333;
+    --accent-dark:#e6b800;
+    --correct:#1d8a5f;
+    --correct-bg:#e3f4ec;
+    --wrong:#c94436;
+    --wrong-bg:#fbe9e6;
+    --muted:#6b7590;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Space Grotesk',sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:28px 28px;
+    min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:32px 20px 80px;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* ---------- Start screen ---------- */
+  .start-card{
+    background:#fff;
+    border:2px solid var(--ink);
+    box-shadow:8px 8px 0 var(--ink);
+    padding:48px 40px;
+    margin-top:48px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:14px;
+  }
+  h1{font-size:clamp(30px,5vw,44px);line-height:1.08;font-weight:700;}
+  h1 mark{background:var(--accent);padding:0 6px;}
+  .start-meta{
+    display:flex;flex-wrap:wrap;gap:24px;margin:28px 0 32px;
+    font-family:'IBM Plex Mono',monospace;font-size:14px;
+  }
+  .start-meta div span{display:block;font-size:24px;font-weight:600;}
+  .start-meta div small{color:var(--muted);}
+  .btn{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:16px;font-weight:700;
+    border:2px solid var(--ink);
+    background:var(--accent);
+    color:var(--ink);
+    padding:14px 30px;
+    cursor:pointer;
+    box-shadow:4px 4px 0 var(--ink);
+    transition:transform .08s ease, box-shadow .08s ease;
+  }
+  .btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink);}
+  .btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink);}
+  .btn:focus-visible{outline:3px solid var(--accent-dark);outline-offset:3px;}
+  .btn.ghost{background:#fff;}
+  .btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:4px 4px 0 var(--ink);transform:none;}
+
+  /* ---------- Quiz screen ---------- */
+  header.quiz-head{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;margin-bottom:20px;flex-wrap:wrap;
+  }
+  .timer{
+    font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:18px;
+    background:var(--ink);color:#fff;padding:6px 14px;
+  }
+  .progress-track{
+    height:10px;background:#fff;border:2px solid var(--ink);
+    margin-bottom:28px;position:relative;
+  }
+  .progress-fill{
+    position:absolute;inset:0;width:0%;
+    background:repeating-linear-gradient(45deg,var(--accent),var(--accent) 8px,var(--accent-dark) 8px,var(--accent-dark) 16px);
+    transition:width .25s ease;
+  }
+  .q-card{
+    background:#fff;border:2px solid var(--ink);
+    box-shadow:8px 8px 0 var(--ink);
+    padding:32px 30px;
+  }
+  .q-num{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;
+    color:var(--muted);letter-spacing:.14em;text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .q-text{font-size:20px;font-weight:500;line-height:1.5;white-space:pre-line;}
+  .options{margin-top:26px;display:grid;gap:12px;}
+  .opt{
+    display:flex;align-items:flex-start;gap:14px;
+    border:2px solid var(--ink);background:#fff;
+    padding:14px 16px;cursor:pointer;text-align:left;
+    font-size:16px;font-family:'Space Grotesk',sans-serif;
+    transition:background .1s ease;width:100%;
+  }
+  .opt:hover{background:#fdf6da;}
+  .opt:focus-visible{outline:3px solid var(--accent-dark);outline-offset:2px;}
+  .opt .key{
+    font-family:'IBM Plex Mono',monospace;font-weight:600;
+    border:2px solid var(--ink);width:28px;height:28px;flex:none;
+    display:flex;align-items:center;justify-content:center;font-size:13px;
+    background:#fff;
+  }
+  .opt.selected{background:var(--accent);}
+  .opt.selected .key{background:var(--ink);color:#fff;}
+  .quiz-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:28px;gap:12px;flex-wrap:wrap;
+  }
+  .dots{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));
+    gap:8px;margin-top:28px;
+  }
+  .dot{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;
+    border:2px solid var(--ink);background:#fff;height:34px;cursor:pointer;
+  }
+  .dot.answered{background:var(--accent);}
+  .dot.current{background:var(--ink);color:#fff;}
+  .dot:focus-visible{outline:3px solid var(--accent-dark);outline-offset:2px;}
+
+  /* ---------- Result screen ---------- */
+  .score-band{
+    background:var(--ink);color:#fff;
+    padding:40px 32px;margin-top:24px;
+    border:2px solid var(--ink);box-shadow:8px 8px 0 rgba(18,34,74,.25);
+  }
+  .score-band .big{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:clamp(48px,10vw,80px);font-weight:600;line-height:1;
+  }
+  .score-band .big em{font-style:normal;color:var(--accent);}
+  .score-sub{margin-top:10px;font-size:16px;color:#c6cee4;}
+  .review{margin-top:36px;display:grid;gap:18px;}
+  .rev-card{
+    background:#fff;border:2px solid var(--ink);padding:22px 22px;
+    border-left-width:8px;
+  }
+  .rev-card.ok{border-left-color:var(--correct);}
+  .rev-card.no{border-left-color:var(--wrong);}
+  .rev-head{
+    display:flex;justify-content:space-between;gap:10px;align-items:baseline;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:8px;
+  }
+  .badge{font-weight:600;padding:2px 8px;}
+  .badge.ok{background:var(--correct-bg);color:var(--correct);}
+  .badge.no{background:var(--wrong-bg);color:var(--wrong);}
+  .rev-q{font-size:16px;font-weight:500;white-space:pre-line;line-height:1.45;}
+  .rev-ans{margin-top:12px;font-size:14px;display:grid;gap:6px;}
+  .rev-ans .line{padding:8px 10px;}
+  .line.user-wrong{background:var(--wrong-bg);color:var(--wrong);}
+  .line.right{background:var(--correct-bg);color:var(--correct);}
+  .expl{margin-top:10px;font-size:14px;color:var(--muted);line-height:1.5;}
+  .result-actions{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap;}
+  .hidden{display:none;}
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+  @media (max-width:520px){
+    .start-card{padding:32px 22px;}
+    .q-card{padding:24px 18px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- START -->
+  <section id="startScreen">
+    <div class="start-card">
+      <div class="eyebrow">Latihan · Single &amp; Multiple Choice</div>
+      <h1>Math English <mark>Logic Test</mark></h1>
+      <p style="margin-top:16px;color:var(--muted);line-height:1.6;">
+        25 soal aritmetika, persentase, rasio, dan pola logika dalam bahasa Inggris.
+        Jawab semua soal, lalu lihat skor dan pembahasannya.
+      </p>
+      <div class="start-meta">
+        <div><span class="mono">25</span><small>Soal</small></div>
+        <div><span class="mono">60:00</span><small>Waktu</small></div>
+        <div><span class="mono">A–D</span><small>Pilihan</small></div>
+      </div>
+      <button class="btn" id="startBtn">Mulai tes</button>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quizScreen" class="hidden">
+    <header class="quiz-head">
+      <div class="eyebrow" style="margin:0;">Math English Logic Test</div>
+      <div class="timer" id="timer">60:00</div>
+    </header>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div class="q-card">
+      <div class="q-num" id="qNum">Soal 1 / 25</div>
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="options"></div>
+    </div>
+
+    <div class="quiz-nav">
+      <button class="btn ghost" id="prevBtn">← Sebelumnya</button>
+      <button class="btn ghost" id="nextBtn">Berikutnya →</button>
+      <button class="btn" id="submitBtn">Selesai &amp; nilai</button>
+    </div>
+
+    <div class="dots" id="dots"></div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="resultScreen" class="hidden">
+    <div class="score-band">
+      <div class="eyebrow" style="color:#8f9ac2;">Hasil tes</div>
+      <div class="big"><em id="scoreNum">0</em>/25</div>
+      <div class="score-sub" id="scoreSub"></div>
+    </div>
+    <div class="result-actions">
+      <button class="btn" id="retryBtn">Ulangi tes</button>
+      <button class="btn ghost" id="reviewToggle">Lihat pembahasan</button>
+    </div>
+    <div class="review hidden" id="review"></div>
+  </section>
+
+</div>
+
+<script>
+const QUESTIONS = [
+ {q:"If 3 notebooks cost Rp27.000, how much do 5 notebooks cost?",
+  o:["Rp42.000","Rp45.000","Rp40.000","Rp43.000"],a:1,
+  e:"Harga 1 notebook = 27.000 ÷ 3 = Rp9.000. Maka 5 × 9.000 = Rp45.000."},
+ {q:"A product costs Rp250.000 and is discounted by 15%. What is the sale price?",
+  o:["Rp212.500","Rp225.000","Rp237.500","Rp240.000"],a:0,
+  e:"Diskon 15% = Rp37.500. Harga jual = 250.000 − 37.500 = Rp212.500."},
+ {q:"A student scores 75, 80, 85, and 90 in 4 tests. What is the average score?",
+  o:["82.5","82","85","80"],a:0,
+  e:"(75+80+85+90) ÷ 4 = 330 ÷ 4 = 82,5."},
+ {q:"A car travels at 60 km/h. How far will it travel in 2.5 hours?",
+  o:["120 km","130 km","140 km","150 km"],a:3,
+  e:"Jarak = kecepatan × waktu = 60 × 2,5 = 150 km."},
+ {q:"What is 25% of Rp1.200.000?",
+  o:["Rp250.000","Rp300.000","Rp350.000","Rp400.000"],a:1,
+  e:"25% = ¼. 1.200.000 ÷ 4 = Rp300.000."},
+ {q:"If 1 USD = Rp15.500, how much is USD 10 in Rupiah?",
+  o:["Rp150.000","Rp155.000","Rp160.000","Rp165.000"],a:1,
+  e:"10 × 15.500 = Rp155.000."},
+ {q:"A class has 12 boys and 18 girls. What is the ratio of boys to girls?",
+  o:["3:2","2:3","4:3","5:4"],a:1,
+  e:"12:18 disederhanakan (÷6) menjadi 2:3."},
+ {q:"If 8 workers can finish a job in 10 days, how many days will it take 4 workers to finish the same job?",
+  o:["20","15","10","8"],a:0,
+  e:"Perbandingan terbalik: 8 × 10 = 80 hari-orang. 80 ÷ 4 = 20 hari."},
+ {q:"A T-shirt is sold for Rp180.000 after a 10% discount. What was the original price?",
+  o:["Rp190.000","Rp195.000","Rp200.000","Rp210.000"],a:2,
+  e:"180.000 = 90% harga asli. Harga asli = 180.000 ÷ 0,9 = Rp200.000."},
+ {q:"A smart factory produces 150 units per day. If 20% are defective, how many non-defective units are produced in 5 days?",
+  o:["500","550","600","650"],a:2,
+  e:"Non-defective per hari = 80% × 150 = 120. Dalam 5 hari = 600 unit."},
+ {q:"A data center's temperature increased from 25°C to 30°C. What is the percentage increase in temperature?",
+  o:["15%","20%","25%","30%"],a:1,
+  e:"Kenaikan 5°C dari 25°C → 5 ÷ 25 = 20%."},
+ {q:"A jacket originally costs Rp480.000. It is now being sold at 25% off. What is the discounted price?",
+  o:["Rp350.000","Rp360.000","Rp370.000","Rp390.000"],a:1,
+  e:"Diskon 25% = Rp120.000. Harga = 480.000 − 120.000 = Rp360.000."},
+ {q:"A family spends the following amounts in a month:\n• Rent: Rp2.000.000\n• Groceries: Rp1.250.000\n• Transport: Rp750.000\n• Utilities: Rp500.000\nWhat is their total monthly expense?",
+  o:["Rp4.500.000","Rp4.300.000","Rp4.200.000","Rp4.000.000"],a:0,
+  e:"2.000.000 + 1.250.000 + 750.000 + 500.000 = Rp4.500.000."},
+ {q:"A person invests Rp1.000.000 in a savings account that gives 5% annual interest. How much interest will they earn in 1 year?",
+  o:["Rp40.000","Rp50.000","Rp55.000","Rp60.000"],a:1,
+  e:"5% × 1.000.000 = Rp50.000."},
+ {q:"A store sells a laptop for Rp12.000.000 after giving a 20% discount. What was the original price?",
+  o:["Rp14.000.000","Rp14.500.000","Rp15.000.000","Rp15.500.000"],a:2,
+  e:"12.000.000 = 80% harga asli. Harga asli = 12.000.000 ÷ 0,8 = Rp15.000.000."},
+ {q:"The pattern is: 5, 10, 20, 40, ... What is the next number?",
+  o:["45","50","60","80"],a:3,
+  e:"Setiap angka dikali 2. 40 × 2 = 80."},
+ {q:"If A = 1, B = 2, ..., what is the sum of the word \u201CIoT\u201D?",
+  o:["35","38","44","49"],a:2,
+  e:"I = 9, O = 15, T = 20. Jumlah = 44."},
+ {q:"An algorithm processes 100 data points in 20 seconds. How long will it take to process 350?",
+  o:["65 sec","70 sec","75 sec","80 sec"],a:1,
+  e:"Kecepatan = 5 data/detik. 350 ÷ 5 = 70 detik."},
+ {q:"There are 48 students. 25% are boys. How many girls are there?",
+  o:["36","34","32","30"],a:0,
+  e:"Perempuan = 75% × 48 = 36."},
+ {q:"A car travels 240 km using 20 liters of fuel. What is the fuel efficiency?",
+  o:["10 km/liter","11 km/liter","12 km/liter","13 km/liter"],a:2,
+  e:"240 ÷ 20 = 12 km/liter."},
+ {q:"What is the next number in this pattern: 1, 4, 9, 16, ...?",
+  o:["20","25","30","36"],a:1,
+  e:"Pola bilangan kuadrat: 1², 2², 3², 4², maka berikutnya 5² = 25."},
+ {q:"A class has 3 boys for every 5 girls. If there are 40 students, how many are boys?",
+  o:["15","18","20","24"],a:0,
+  e:"Laki-laki = 3/8 × 40 = 15."},
+ {q:"Which method is more efficient: A (300 KB in 3 sec) or B (500 KB in 7 sec)?",
+  o:["A","B","Both Equal","Cannot Tell"],a:0,
+  e:"A = 100 KB/detik, B ≈ 71,4 KB/detik. A lebih efisien."},
+ {q:"A robot has 3 tasks: A takes 2s, B takes 3s, C takes 5s. How many full cycles in 60 seconds?",
+  o:["5","6","7","8"],a:1,
+  e:"1 siklus = 2+3+5 = 10 detik. 60 ÷ 10 = 6 siklus penuh."},
+ {q:"A device sends compressed data 30% smaller than the original 1 GB. What is the final size?",
+  o:["600 MB","700 MB","800 MB","900 MB"],a:1,
+  e:"70% × 1.000 MB = 700 MB."}
+];
+
+const KEYS = ["a","b","c","d"];
+const DURATION = 60 * 60; // 60 menit
+
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+let timeLeft = DURATION;
+let timerId = null;
+
+const $ = id => document.getElementById(id);
+const startScreen = $("startScreen"), quizScreen = $("quizScreen"), resultScreen = $("resultScreen");
+
+$("startBtn").addEventListener("click", startQuiz);
+$("prevBtn").addEventListener("click", () => go(current - 1));
+$("nextBtn").addEventListener("click", () => go(current + 1));
+$("submitBtn").addEventListener("click", trySubmit);
+$("retryBtn").addEventListener("click", () => { resetQuiz(); startQuiz(); });
+$("reviewToggle").addEventListener("click", () => {
+  const r = $("review");
+  const hidden = r.classList.toggle("hidden");
+  $("reviewToggle").textContent = hidden ? "Lihat pembahasan" : "Sembunyikan pembahasan";
+});
+
+function resetQuiz(){
+  current = 0;
+  answers = new Array(QUESTIONS.length).fill(null);
+  timeLeft = DURATION;
+}
+
+function startQuiz(){
+  startScreen.classList.add("hidden");
+  resultScreen.classList.add("hidden");
+  quizScreen.classList.remove("hidden");
+  buildDots();
+  render();
+  clearInterval(timerId);
+  updateTimer();
+  timerId = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if(timeLeft <= 0){ clearInterval(timerId); finish(); }
+  }, 1000);
+}
+
+function updateTimer(){
+  const m = String(Math.floor(timeLeft / 60)).padStart(2,"0");
+  const s = String(timeLeft % 60).padStart(2,"0");
+  $("timer").textContent = m + ":" + s;
+  $("timer").style.background = timeLeft <= 60 ? "var(--wrong)" : "var(--ink)";
+}
+
+function buildDots(){
+  const d = $("dots");
+  d.innerHTML = "";
+  QUESTIONS.forEach((_, i) => {
+    const b = document.createElement("button");
+    b.className = "dot";
+    b.textContent = i + 1;
+    b.setAttribute("aria-label", "Ke soal " + (i + 1));
+    b.addEventListener("click", () => go(i));
+    d.appendChild(b);
+  });
+}
+
+function go(i){
+  if(i < 0 || i >= QUESTIONS.length) return;
+  current = i;
+  render();
+}
+
+function render(){
+  const q = QUESTIONS[current];
+  $("qNum").textContent = "Soal " + (current + 1) + " / " + QUESTIONS.length;
+  $("qText").textContent = q.q;
+
+  const box = $("options");
+  box.innerHTML = "";
+  q.o.forEach((opt, i) => {
+    const b = document.createElement("button");
+    b.className = "opt" + (answers[current] === i ? " selected" : "");
+    b.innerHTML = '<span class="key">' + KEYS[i].toUpperCase() + '</span><span>' + opt + '</span>';
+    b.addEventListener("click", () => {
+      answers[current] = i;
+      render();
+      // otomatis lanjut jika bukan soal terakhir
+      if(current < QUESTIONS.length - 1) setTimeout(() => go(current + 1), 220);
+    });
+    box.appendChild(b);
+  });
+
+  $("prevBtn").disabled = current === 0;
+  $("nextBtn").disabled = current === QUESTIONS.length - 1;
+
+  const answered = answers.filter(a => a !== null).length;
+  $("progressFill").style.width = (answered / QUESTIONS.length * 100) + "%";
+
+  document.querySelectorAll(".dot").forEach((d, i) => {
+    d.className = "dot" + (answers[i] !== null ? " answered" : "") + (i === current ? " current" : "");
+  });
+}
+
+function trySubmit(){
+  const unanswered = answers.filter(a => a === null).length;
+  if(unanswered > 0 && !confirm("Masih ada " + unanswered + " soal belum dijawab. Selesaikan sekarang?")) return;
+  finish();
+}
+
+function finish(){
+  clearInterval(timerId);
+  quizScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
+  $("review").classList.add("hidden");
+  $("reviewToggle").textContent = "Lihat pembahasan";
+
+  let score = 0;
+  QUESTIONS.forEach((q, i) => { if(answers[i] === q.a) score++; });
+
+  $("scoreNum").textContent = score;
+  const pct = Math.round(score / QUESTIONS.length * 100);
+  let msg;
+  if(pct === 100) msg = "Sempurna! Semua jawaban benar.";
+  else if(pct >= 80) msg = "Skor " + pct + "% — sangat baik!";
+  else if(pct >= 60) msg = "Skor " + pct + "% — cukup baik, terus berlatih.";
+  else msg = "Skor " + pct + "% — pelajari pembahasan lalu coba lagi.";
+  $("scoreSub").textContent = msg;
+
+  const rev = $("review");
+  rev.innerHTML = "";
+  QUESTIONS.forEach((q, i) => {
+    const ok = answers[i] === q.a;
+    const card = document.createElement("div");
+    card.className = "rev-card " + (ok ? "ok" : "no");
+    let ansHtml = "";
+    if(!ok && answers[i] !== null){
+      ansHtml += '<div class="line user-wrong">Jawabanmu: ' + KEYS[answers[i]].toUpperCase() + ". " + q.o[answers[i]] + '</div>';
+    }
+    if(!ok && answers[i] === null){
+      ansHtml += '<div class="line user-wrong">Tidak dijawab</div>';
+    }
+    ansHtml += '<div class="line right">Kunci: ' + KEYS[q.a].toUpperCase() + ". " + q.o[q.a] + '</div>';
+    card.innerHTML =
+      '<div class="rev-head"><span>Soal ' + (i + 1) + '</span><span class="badge ' + (ok ? 'ok">Benar' : 'no">Salah') + '</span></div>' +
+      '<div class="rev-q">' + q.q.replace(/\n/g, "<br>") + '</div>' +
+      '<div class="rev-ans">' + ansHtml + '</div>' +
+      '<div class="expl">' + q.e + '</div>';
+    rev.appendChild(card);
+  });
+
+  window.scrollTo({top: 0});
+}
+</script>
+</body>
+</html>
